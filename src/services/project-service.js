@@ -4,6 +4,7 @@ const projects = [
     name: 'Project 1',
     author: 'Jimmy Gaymaker',
     link: 'http://my.game.com',
+    platforms: ['Windows'],
     tools: ['Tool 1', 'Tool 2', 'Tool 3'],
     tags: ['rpg', 'rogue-like', 'adventure']
   },
@@ -12,6 +13,7 @@ const projects = [
     name: 'Project 2',
     author: 'Arthur Authorton',
     link: 'http://megafun.com',
+    platforms: ['Windows'],
     tools: ['Tool 1', 'Tool 2', 'Tool 3'],
     tags: ['point-and-click', 'story-driven', 'adventure']
   },
@@ -20,6 +22,7 @@ const projects = [
     name: 'Project 3',
     author: 'Zoe Devmeister',
     link: 'http://bestgameevar.com',
+    platforms: ['Windows'],
     tools: ['Gamemaker Studio'],
     tags: ['first-person shooter']
   },
@@ -28,6 +31,7 @@ const projects = [
     name: 'Game of Games',
     author: 'Sasha Swisscheese',
     link: 'http://gameon.org',
+    platforms: ['Windows'],
     tools: ['C++', 'Audacity', 'Blender3D'],
     tags: ['rpg', 'rogue-like', 'adventure']
   }
@@ -37,5 +41,8 @@ export const searchByName = (options = { search: '' }) => {
   const results = projects.filter(project => {
     return project.name.toLowerCase().indexOf(options.search.toLowerCase()) > -1;
   });
-  return Promise.resolve(results);
+  // Simulate latency
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(results), 1000 * Math.random());
+  });
 };
