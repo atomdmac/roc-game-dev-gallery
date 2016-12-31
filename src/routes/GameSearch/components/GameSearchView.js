@@ -1,19 +1,21 @@
 import React from 'react';
 import SearchBar from 'components/SearchBar';
+import GameSearchResult from './GameSearchResult';
+import './GameSearchView.scss';
 
 export const GameSearchView = (props) => {
+  console.log(props.searchInput);
   const results = props.searchResults.map((result, index) => {
-    return <li key={index}>
-      <h4>{result.name}</h4>
-      <p>By {result.author}</p>
-    </li>;
+    return <GameSearchResult {...result} key={index} />;
   });
-  return <div style={{ margin: '0 auto' }} >
-    <h2>Search Games:</h2>
-    <SearchBar {...props} onChange={props.handleSearchInput} />
-    <div style={{ width: 50, height: 50, background: 'green', visibility: props.isFetching ? 'visible' : 'hidden' }} />
+  return <div className='game-search' style={{ margin: '0 auto' }} >
+    <SearchBar
+      placeholder='Who in ROC is working on...'
+      {...props}
+      onChange={props.handleSearchInput}
+    />
     <ul>
-      {results.length ? results : 'Sorry, man.  No results :\'(' }
+      {results.length && props.searchInput !== '' ? results : 'Sorry, man.  No results :\'(' }
     </ul>
   </div>;
 };

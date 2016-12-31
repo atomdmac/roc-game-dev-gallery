@@ -2,6 +2,7 @@
 import CoreLayout from '../layouts/CoreLayout';
 import Home from './Home';
 import SearchRoute from './GameSearch';
+import GameDetailsRoute from './GameDetails';
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -9,9 +10,9 @@ import SearchRoute from './GameSearch';
 export const createRoutes = (store) => ({
   path        : '/',
   component   : CoreLayout,
-  indexRoute  : Home,
+  indexRoute  : SearchRoute(store),
   childRoutes : [
-    SearchRoute(store)
+    GameDetailsRoute(store)
   ]
 });
 

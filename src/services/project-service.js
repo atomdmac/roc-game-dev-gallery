@@ -1,6 +1,11 @@
 const projects = [
   {
     id: '1',
+    media: {
+      thumb: '/images/placeholder.png',
+      banner: '/images/placeholder.png',
+      screenshots: []
+    },
     name: 'Project 1',
     author: 'Jimmy Gaymaker',
     link: 'http://my.game.com',
@@ -10,6 +15,11 @@ const projects = [
   },
   {
     id: '2',
+    media: {
+      thumb: '/images/placeholder.png',
+      banner: '/images/placeholder.png',
+      screenshots: []
+    },
     name: 'Project 2',
     author: 'Arthur Authorton',
     link: 'http://megafun.com',
@@ -19,6 +29,11 @@ const projects = [
   },
   {
     id: '3',
+    media: {
+      thumb: '/images/placeholder.png',
+      banner: '/images/placeholder.png',
+      screenshots: []
+    },
     name: 'Project 3',
     author: 'Zoe Devmeister',
     link: 'http://bestgameevar.com',
@@ -28,6 +43,11 @@ const projects = [
   },
   {
     id: '4',
+    media: {
+      thumb: '/images/placeholder.png',
+      banner: '/images/placeholder.png',
+      screenshots: []
+    },
     name: 'Game of Games',
     author: 'Sasha Swisscheese',
     link: 'http://gameon.org',
@@ -44,5 +64,15 @@ export const searchByName = (options = { search: '' }) => {
   // Simulate latency
   return new Promise((resolve, reject) => {
     setTimeout(() => resolve(results), 1000 * Math.random());
+  });
+};
+
+export const getById = (options = {}) => {
+  if (typeof options.id !== 'string') return Promise.reject('An "id" propery is missing from the options argument');
+
+  const result = projects.find(project => project.id === options.id);
+  // Simulate latency.
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(result), 1000 * Math.random());
   });
 };

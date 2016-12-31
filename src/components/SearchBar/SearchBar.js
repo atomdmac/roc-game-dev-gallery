@@ -1,20 +1,28 @@
 import React from 'react';
 
+import './SearchBar.scss';
+
 export const SearchBar = (props) => {
-  const { searchInput, onChange } = props;
-  return <div>
+  const { searchInput, onChange, isFetching, placeholder = 'Search...' } = props;
+  return <div className='search-bar'>
     <input
       type='text'
-      placeholder='Search...'
+      placeholder={placeholder}
       value={searchInput}
       onChange={onChange}
+    />
+    <div
+      className='icon-waiting'
+      style={{ visibility: isFetching ? 'visible' : 'hidden' }}
     />
   </div>;
 };
 
 SearchBar.propTypes = {
-  searchInput: React.PropTypes.string.isRequired,
-  onChange  : React.PropTypes.func
+  placeholder : React.PropTypes.string,
+  isFetching  : React.PropTypes.bool,
+  searchInput : React.PropTypes.string.isRequired,
+  onChange    : React.PropTypes.func
 };
 
 export default SearchBar;
