@@ -5,6 +5,9 @@ const webpack = require('webpack')
 const webpackConfig = require('../config/webpack.config')
 const project = require('../config/project.config')
 const compress = require('compression')
+const services = {
+  projects: require('./services/project-service')
+};
 
 const app = express()
 
@@ -37,11 +40,34 @@ if (project.env === 'development') {
   // when the application is compiled.
   app.use(express.static(project.paths.public()))
 
+  app.get('/api/search', function (req, res) {
+    services.projects.searchByName(req.query)
+    .then(function (results) {
+      res.send(results);
+    })
+    .catch(function (err) {
+      res.send(err);
+    });
+  });
+
+  app.get('/api/project', function (req, res) {
+    services.projects.getById(req.query)
+    .then(function (results) {
+      console.log('SUCCESS: ', results);
+      res.send(results);
+    })
+    .catch(function (err) {
+      console.log('ERROR: ', err);
+      res.send(err);
+    });
+  });
+
   // This rewrites all routes requests to the root /index.html file
   // (ignoring file requests). If you want to implement universal
   // rendering, you'll want to remove this middleware.
   app.use('*', function (req, res, next) {
     const filename = path.join(compiler.outputPath, 'index.html')
+    console.log(filename);
     compiler.outputFileSystem.readFile(filename, (err, result) => {
       if (err) {
         return next(err)
