@@ -1,4 +1,3 @@
-//Example POST method invocation
 import * as api from 'axios';
 
 export const searchByName = (options = { search: '' }) => {

@@ -1,79 +1,35 @@
-const projects = [
-  {
-    id: '1',
-    media: {
-      thumb: '/images/placeholder.png',
-      banner: '/images/placeholder.png',
-      screenshots: []
-    },
-    name: 'Project 1',
-    author: 'Jimmy Gaymaker',
-    link: 'http://my.game.com',
-    platforms: ['Windows'],
-    tools: ['Tool 1', 'Tool 2', 'Tool 3'],
-    tags: ['rpg', 'rogue-like', 'adventure']
-  },
-  {
-    id: '2',
-    media: {
-      thumb: '/images/placeholder.png',
-      banner: '/images/placeholder.png',
-      screenshots: []
-    },
-    name: 'Project 2',
-    author: 'Arthur Authorton',
-    link: 'http://megafun.com',
-    platforms: ['Windows'],
-    tools: ['Tool 1', 'Tool 2', 'Tool 3'],
-    tags: ['point-and-click', 'story-driven', 'adventure']
-  },
-  {
-    id: '3',
-    media: {
-      thumb: '/images/placeholder.png',
-      banner: '/images/placeholder.png',
-      screenshots: []
-    },
-    name: 'Project 3',
-    author: 'Zoe Devmeister',
-    link: 'http://bestgameevar.com',
-    platforms: ['Windows'],
-    tools: ['Gamemaker Studio'],
-    tags: ['first-person shooter']
-  },
-  {
-    id: '4',
-    media: {
-      thumb: '/images/placeholder.png',
-      banner: '/images/placeholder.png',
-      screenshots: []
-    },
-    name: 'Game of Games',
-    author: 'Sasha Swisscheese',
-    link: 'http://gameon.org',
-    platforms: ['Windows'],
-    tools: ['C++', 'Audacity', 'Blender3D'],
-    tags: ['rpg', 'rogue-like', 'adventure']
-  }
-];
+const MongoClient = require('mongodb');
+
+let projectsDb = null;
+let users = null;
+const url = 'mongodb://localhost:27017/test';
+MongoClient
+  .connect(url)
+  .then(function (db) {
+    projectsDb = db;
+    users = db.collection('users');
+  })
+  .catch(function (err) {
+    console.log('ERROR connecting to MongoDb: ', err);
+  });
 
 const searchByName = (options = { search: '' }) => {
-  const results = projects.filter(project => {
-    return project.name.toLowerCase().indexOf(options.search.toLowerCase()) > -1;
+  if (!projectsDb) return Promise.reject('No database connection.');
+  // TODO: Consider replacing this w/ a text index.  Faster?
+  const results = users.find({
+    name: {
+      $regex: '.*' + options.search + '.*',
+      $options: 'i'
+    }
   });
-  return new Promise((resolve, reject) => {
-    resolve(results);
-  });
+  return results.toArray();
 };
 
 const getById = (options = {}) => {
+  if (!projectsDb) return Promise.reject('No database connection.');
   if (typeof options.id !== 'string') return Promise.reject('An "id" propery is missing from the options argument');
 
-  const result = projects.find(project => project.id === options.id);
-  // Simulate latency.
-  return new Promise((resolve, reject) => {
-    resolve(result);
-  });
+  return users.findOne({ id: options.id });
 };
 
 module.exports = {

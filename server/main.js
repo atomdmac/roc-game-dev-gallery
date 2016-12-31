@@ -40,26 +40,26 @@ if (project.env === 'development') {
   // when the application is compiled.
   app.use(express.static(project.paths.public()))
 
+  // Define API endpoint for search.
   app.get('/api/search', function (req, res) {
     services.projects.searchByName(req.query)
-    .then(function (results) {
-      res.send(results);
-    })
-    .catch(function (err) {
-      res.send(err);
-    });
+      .then(function (results) {
+        res.send(results);
+      })
+      .catch(function (err) {
+        res.send(err);
+      });
   });
 
+  // Define API endpoint for project details.
   app.get('/api/project', function (req, res) {
     services.projects.getById(req.query)
-    .then(function (results) {
-      console.log('SUCCESS: ', results);
-      res.send(results);
-    })
-    .catch(function (err) {
-      console.log('ERROR: ', err);
-      res.send(err);
-    });
+      .then(function (results) {
+        res.send(results);
+      })
+      .catch(function (err) {
+        res.send(err);
+      });
   });
 
   // This rewrites all routes requests to the root /index.html file
